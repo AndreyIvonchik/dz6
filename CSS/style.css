@@ -1,52 +1,55 @@
-#loader{
+#loader {
   display: none;
 }
-#pagination{
+#pagination {
   display: none;
 }
 
 #header {
-height: 380px;
-background-image: url('../img/header-bg.jpg');
-background-repeat: no-repeat;
--webkit-background-size: cover;
-background-size: cover;
-background-position: center center;
-padding-top: 80px;
-
+  height: 380px;
+  background-image: url("../img/header-bg.jpg");
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center center;
+  padding-top: 80px;
 }
 
 .form-wrapper {
-background-color: rgba(255,255,255, .9);
-border-radius: 10px;
-text-align: center;
-padding: 20px 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  text-align: center;
+  padding: 20px 10px;
 }
 
-
 #sidebar .label {
-display: block;
-margin: 15px 0;
+  display: block;
+  margin: 15px 0;
 }
 
 #sidebar .line {
-display: block;
-padding-top: 30px;
-border-bottom: 1px solid rgba(0,0,0,.3);
+  display: block;
+  padding-top: 30px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 #content a {
-display: block;
-color: #000;
+  display: block;
+  color: #000;
 }
 
 #content .card-action a {
-color: #26a69a;
+  color: #26a69a;
 }
 
 .card-image {
-height: 250px;
-width: 250px;
+  height: 250px;
+  width: 250px;
+}
+
+#modalImg {
+  height: 200px;
+  width: 200px;
 }
 
 .card.horizontal .card-image img {
@@ -54,20 +57,29 @@ width: 250px;
 }
 
 .title {
-font-size: 20px;
-font-weight: bold;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .price {
-color: #26a69a;
+  color: #26a69a;
 }
 
 .progress {
-margin: 0 !important;
+  margin: 0 !important;
 }
 
 .pagination {
   position: fixed;
   right: 0;
   bottom: 0;
+}
+
+#electsClear {
+  display: none;
+}
+
+#googleMap {
+  width: 100%;
+  height: 200px;
 }

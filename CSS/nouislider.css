@@ -352,7 +352,7 @@
 .noUi-tooltip span {
   width: 100%;
   text-align: center;
-  color: #fff;
+  color: black;
   font-size: 12px;
   opacity: 0;
   position: absolute;
@@ -390,7 +390,7 @@
 .noUi-vertical .noUi-tooltip span {
   width: 100%;
   text-align: center;
-  color: #fff;
+  color: black;
   font-size: 12px;
   transform: rotate(135deg);
   opacity: 0;

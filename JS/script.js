@@ -17,8 +17,11 @@ var sliderPrice = document.getElementById('slider-price');
 var sliderRooms = document.getElementById('slider-rooms');
 var sliderBedrooms = document.getElementById('slider-bedrooms');
 var sliderBathrooms = document.getElementById('slider-bathrooms');
-
-var response;
+var electsClear = document.getElementById('electsClear');
+var cardLink = document.getElementById('cardLink');
+var modalImg = document.getElementById('modalImg');
+var modalLinkMaps = document.getElementById('modalLinkMaps');
+var response = {listings:[]};
 var country;
 var city;
 var type;
@@ -60,7 +63,6 @@ function callbackFunc(result){
     alert("Not found");
   }
   else{
-    console.log(response);
     addItems(result.response.listings);
     pagination.style.display = "block";
     pageNumber.innerHTML = page;
@@ -75,32 +77,54 @@ function addItems(listings){
   }
   for (var i = 0; i < listings.length; i++){
     content.insertAdjacentHTML( "beforeEnd", `
-                  <a id="cardLink" class="modal-trigger" href="#modal1">
-                    <div id="card-${i}" class="col s12 m12 cards">
-                      <div class="card horizontal">
-                        <div class="card-image">
-                          <img src="${listings[i].img_url}">
-                        </div>
-                        <div class="card-stacked">
-                          <div class="card-content">
-                            <p class="price">${listings[i].price_formatted}</p>
-                            <p class="title">${listings[i].title}</p>
-                            <p class="descr">${listings[i].summary}</p>
-        
-                          </div>
-                          <div class="card-action">
-                            <a id="elect">Add favorite</a>
-                          </div>
-                          </a>`);
+    <a id="cardLink" onclick="addModalElements()" name="${i}" class="modal-trigger" href="#modal1">
+    <div class="col s12 m12 cards">
+        <div class="card horizontal">
+            <div class="card-image">
+                <img src="${listings[i].img_url}">
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">
+                    <p class="price">${listings[i].price_formatted}</p>
+                    <p class="title">${listings[i].title}</p>
+                    <p class="descr">${listings[i].summary}</p>
+                </div>
+                <div class="card-action">
+                    <a class="waves-effect waves-light btn grey lighten-5" id="elect" name="${i}">Add favorite</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</a>`);
   }
+}
+function addModalElements(){
+  var id = event.currentTarget.name;
+  modalTitle.innerHTML = response.listings[id].title;
+  modalPrise.innerHTML = response.listings[id].price_formatted;
+  modalDescr.innerHTML = response.listings[id].summary;
+  modalBedrooms.innerHTML = "Bedrooms: " + response.listings[id].bedroom_number;
+  modalBathrooms.innerHTML = "Bathrooms: " + response.listings[id].bathroom_number;
+  modalLink.href = response.listings[id].lister_url;
+  modalImg.src = response.listings[id].img_url;
+  modalLinkMaps.href = `https://maps.google.com/?hl=ru&q=${response.listings[id].latitude},${response.listings[id].longitude}`
 }
 
 document.addEventListener("click", function(element) {
   if(element.target.id == "searchBtn"){
+    electsClear.style.display = "none";
     country = countryField.options[countryField.selectedIndex].value;
     city = cityField.value;
     type = form.elements["group1"].value;
     page = 1;
+    filtr.prise_min = sliderPrice.noUiSlider.get()[0];
+    filtr.prise_max = sliderPrice.noUiSlider.get()[1];
+    filtr.rooms_min = sliderRooms.noUiSlider.get()[0];
+    filtr.rooms_max = sliderRooms.noUiSlider.get()[1];
+    filtr.bedrooms_min = sliderBedrooms.noUiSlider.get()[0];
+    filtr.bedrooms_max = sliderBedrooms.noUiSlider.get()[1];
+    filtr.bathrooms_min = sliderBathrooms.noUiSlider.get()[0];
+    filtr.bathrooms_max = sliderBathrooms.noUiSlider.get()[1];
     createQuery(country, city, type, page, filtr);
   }
 
@@ -118,7 +142,7 @@ document.addEventListener("click", function(element) {
 
   if(element.target.id == "elect"){
     var pos = localStorage.length;
-    var id = 0;//ДОБАВИТЬ ПОЛУЧЕНИЕ ID ЗАПИСИ
+    var id = element.target.name;
     var serialObj = JSON.stringify(response.listings[id]);
     localStorage.setItem(pos, serialObj);
   }
@@ -129,6 +153,7 @@ document.addEventListener("click", function(element) {
     }
     else{
       pagination.style.display = "none";
+      electsClear.style.display = "inline-block";
       var listings = [];
       for (var key = 0; key < localStorage.length; key++) {
         var returnObj = JSON.parse(localStorage.getItem(key));
@@ -138,64 +163,74 @@ document.addEventListener("click", function(element) {
       response.listings = listings;
     }
   }
-  if(element.currentTarget.id == "cardLink"){
-    alert("lol");
-    modalTitle = document.getElementById("modalTitle");
-    modalPrise = document.getElementById("modalPrise");
-    modalDescr = document.getElementById("modalDescr");
-    modalRooms = document.getElementById("modalRooms");
-    modalBedrooms = document.getElementById("modalBedrooms");
-    modalBathrooms = document.getElementById("modalBathrooms");
-    modalLink = document.getElementById("modalLink");
+  if(element.target.id == "electsClear"){
+    localStorage.clear();
+    electsClear.style.display = "none";
+    while (content.children[0]) {
+      content.removeChild(content.lastChild);
+    }
   }
+
 });
 
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems, "options");
   });
-  
+
 document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('modal');
-    var instances = M.Modal.init(elems, "options");
-  });
+  var elems = document.querySelectorAll('.modal');
+  var instances = M.Modal.init(elems, "options");
+});
 
   noUiSlider.create(sliderPrice, {
-    start: [0, 9999999999],
+    start: [0, 5000000],
     connect: true,
     step: 100,
     range: {
         'min': 0,
-        'max': 9999999999
-    }
+        'max': 5000000
+    },
+    format: wNumb({
+      decimals: 0,
+    })
   });
   
   noUiSlider.create(sliderRooms, {
-    start: [0, 99],
+    start: [0, 50],
     connect: true,
     step: 1,
     range: {
         'min': 0,
-        'max': 99
-    }
+        'max': 50
+    },
+    format: wNumb({
+      decimals: 0,
+    })
   });
   
   noUiSlider.create(sliderBedrooms, {
-    start: [0, 99],
+    start: [0, 50],
     connect: true,
     step: 1,
     range: {
         'min': 0,
-        'max': 99
-    }
+        'max': 50
+    },
+    format: wNumb({
+      decimals: 0,
+    })
   });
   
   noUiSlider.create(sliderBathrooms, {
-    start: [0, 99],
+    start: [0, 50],
     connect: true,
     step: 1,
     range: {
         'min': 0,
-        'max': 99
-    }
+        'max': 50
+    },
+    format: wNumb({
+      decimals: 0,
+    })
   });
