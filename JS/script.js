@@ -13,7 +13,10 @@ var modalBedrooms = document.getElementById("modalBedrooms");
 var modalBathrooms = document.getElementById("modalBathrooms");
 var modalLink = document.getElementById("modalLink");
 var pageNumber = document.getElementById("pageNumber");
-
+var sliderPrice = document.getElementById('slider-price');
+var sliderRooms = document.getElementById('slider-rooms');
+var sliderBedrooms = document.getElementById('slider-bedrooms');
+var sliderBathrooms = document.getElementById('slider-bathrooms');
 
 var response;
 var country;
@@ -30,53 +33,6 @@ var filtr ={
   bathrooms_min: "min",
   bathrooms_max: "max"
 };
-var sliderPrice = document.getElementById('slider-price');
-
-noUiSlider.create(sliderPrice, {
-  start: [0, 9999999999],
-  connect: true,
-  step: 100,
-  range: {
-      'min': 0,
-      'max': 9999999999
-  }
-});
-
-var sliderRooms = document.getElementById('slider-rooms');
-
-noUiSlider.create(sliderRooms, {
-  start: [0, 99],
-  connect: true,
-  step: 1,
-  range: {
-      'min': 0,
-      'max': 99
-  }
-});
-
-var sliderBedrooms = document.getElementById('slider-bedrooms');
-
-noUiSlider.create(sliderBedrooms, {
-  start: [0, 99],
-  connect: true,
-  step: 1,
-  range: {
-      'min': 0,
-      'max': 99
-  }
-});
-
-var sliderBathrooms = document.getElementById('slider-bathrooms');
-
-noUiSlider.create(sliderBathrooms, {
-  start: [0, 99],
-  connect: true,
-  step: 1,
-  range: {
-      'min': 0,
-      'max': 99
-  }
-});
 
 function createQuery(country, city, type, page, filtr){
   loader.style.display = "block"
@@ -200,6 +156,46 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
 document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.modal');
+    var elems = document.querySelectorAll('modal');
     var instances = M.Modal.init(elems, "options");
+  });
+
+  noUiSlider.create(sliderPrice, {
+    start: [0, 9999999999],
+    connect: true,
+    step: 100,
+    range: {
+        'min': 0,
+        'max': 9999999999
+    }
+  });
+  
+  noUiSlider.create(sliderRooms, {
+    start: [0, 99],
+    connect: true,
+    step: 1,
+    range: {
+        'min': 0,
+        'max': 99
+    }
+  });
+  
+  noUiSlider.create(sliderBedrooms, {
+    start: [0, 99],
+    connect: true,
+    step: 1,
+    range: {
+        'min': 0,
+        'max': 99
+    }
+  });
+  
+  noUiSlider.create(sliderBathrooms, {
+    start: [0, 99],
+    connect: true,
+    step: 1,
+    range: {
+        'min': 0,
+        'max': 99
+    }
   });
