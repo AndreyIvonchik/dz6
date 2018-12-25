@@ -5,6 +5,16 @@ var searchBtn = document.getElementById("searchBtn");
 var form = document.getElementById("form");
 var loader = document.getElementById("loader");
 var pagination = document.getElementById("pagination");
+var modalTitle = document.getElementById("modalTitle");
+var modalPrise = document.getElementById("modalPrise");
+var modalDescr = document.getElementById("modalDescr");
+var modalRooms = document.getElementById("modalRooms");
+var modalBedrooms = document.getElementById("modalBedrooms");
+var modalBathrooms = document.getElementById("modalBathrooms");
+var modalLink = document.getElementById("modalLink");
+var pageNumber = document.getElementById("pageNumber");
+
+
 var response;
 var country;
 var city;
@@ -18,22 +28,59 @@ var filtr ={
   bedrooms_min: "min",
   bedrooms_max: "max",
   bathrooms_min: "min",
-  bathrooms_max: "max"      
+  bathrooms_max: "max"
 };
-// var slider = document.getElementById('test-slider');
+var sliderPrice = document.getElementById('slider-price');
 
-// noUiSlider.create(slider, {
-//   start: [20, 80],
-//   connect: true,
-//   range: {
-//       'min': 0,
-//       'max': 100
-//   }
-// });
+noUiSlider.create(sliderPrice, {
+  start: [0, 9999999999],
+  connect: true,
+  step: 100,
+  range: {
+      'min': 0,
+      'max': 9999999999
+  }
+});
+
+var sliderRooms = document.getElementById('slider-rooms');
+
+noUiSlider.create(sliderRooms, {
+  start: [0, 99],
+  connect: true,
+  step: 1,
+  range: {
+      'min': 0,
+      'max': 99
+  }
+});
+
+var sliderBedrooms = document.getElementById('slider-bedrooms');
+
+noUiSlider.create(sliderBedrooms, {
+  start: [0, 99],
+  connect: true,
+  step: 1,
+  range: {
+      'min': 0,
+      'max': 99
+  }
+});
+
+var sliderBathrooms = document.getElementById('slider-bathrooms');
+
+noUiSlider.create(sliderBathrooms, {
+  start: [0, 99],
+  connect: true,
+  step: 1,
+  range: {
+      'min': 0,
+      'max': 99
+  }
+});
 
 function createQuery(country, city, type, page, filtr){
   loader.style.display = "block"
-  if(country == "au" || country == "br"){
+  if(country == "br"){
     country = `com.${country}`;
   }
   if(country == "uk"){
@@ -52,7 +99,7 @@ function callbackFunc(result){
   response = result.response;
    if(result.response.application_response_code == 200){
     alert("Unknown location");
-  } 
+  }
   else if(result.response.listings.length == 0){
     alert("Not found");
   }
@@ -60,29 +107,35 @@ function callbackFunc(result){
     console.log(response);
     addItems(result.response.listings);
     pagination.style.display = "block";
+    pageNumber.innerHTML = page;
   }
   loader.style.display = "none";
 }
 
 function addItems(listings){
   loader.style.display = "none";
-  while (content.children[2]) {
+  while (content.children[0]) {
     content.removeChild(content.lastChild);
   }
-  for (var i = 0; i < listings.length; i++){ 
-    content.insertAdjacentHTML( "beforeEnd", `<div class="card horizontal">
-                              <div class="card-image">
-                                <img src= "${listings[i].img_url}">
-                              </div>
-                              <div class="card-stacked">
-                                <div class="card-content">
-                                  <p>${listings[i].title} Prise: ${listings[i].price_formatted} </p>
-                                </div>
-                                <div class="card-action center">
-                                  <a href="#"><i id="elect" class="material-icons small">star_border</i></a>
-                                </div>
-                              </div>
-                            </div>`);
+  for (var i = 0; i < listings.length; i++){
+    content.insertAdjacentHTML( "beforeEnd", `
+                  <a id="cardLink" class="modal-trigger" href="#modal1">
+                    <div id="card-${i}" class="col s12 m12 cards">
+                      <div class="card horizontal">
+                        <div class="card-image">
+                          <img src="${listings[i].img_url}">
+                        </div>
+                        <div class="card-stacked">
+                          <div class="card-content">
+                            <p class="price">${listings[i].price_formatted}</p>
+                            <p class="title">${listings[i].title}</p>
+                            <p class="descr">${listings[i].summary}</p>
+        
+                          </div>
+                          <div class="card-action">
+                            <a id="elect">Add favorite</a>
+                          </div>
+                          </a>`);
   }
 }
 
@@ -98,9 +151,9 @@ document.addEventListener("click", function(element) {
   if(element.target.id == "pageRight"){
     page += 1;
     if(page > 50) page = 1;
-    createQuery(country, city, type, page, filtr); 
+    createQuery(country, city, type, page, filtr);
   }
-  
+
   if(element.target.id == "pageLeft"){
     page -= 1;
     if(page < 1) page = 50;
@@ -116,8 +169,8 @@ document.addEventListener("click", function(element) {
 
   if(element.target.id == "elects"){
     if(!localStorage.length){
-      alert("No elects");
-    } 
+      alert("Not found");
+    }
     else{
       pagination.style.display = "none";
       var listings = [];
@@ -126,12 +179,27 @@ document.addEventListener("click", function(element) {
         listings.push(returnObj);
       }
       addItems(listings);
+      response.listings = listings;
     }
   }
+  if(element.currentTarget.id == "cardLink"){
+    alert("lol");
+    modalTitle = document.getElementById("modalTitle");
+    modalPrise = document.getElementById("modalPrise");
+    modalDescr = document.getElementById("modalDescr");
+    modalRooms = document.getElementById("modalRooms");
+    modalBedrooms = document.getElementById("modalBedrooms");
+    modalBathrooms = document.getElementById("modalBathrooms");
+    modalLink = document.getElementById("modalLink");
+  }
 });
-
 
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems, "options");
+  });
+  
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, "options");
   });

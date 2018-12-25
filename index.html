@@ -10,67 +10,112 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   </head>
   <body>
-    <nav class="nav-extended grey darken-3">
-        <div class="nav-wrapper">
-          <a href="#!" class="brand-logo"><i class="Medium material-icons">home</i>Housing search</a> 
-          <ul class="right hide-on-med-and-down">
-            <li><a><i id="elects" class="material-icons">star_border</i></a></li>
-          </ul>
-        </div>
-        <div class="nav-content center">
-            <div class="container">
-            <form id="form" action="#">
-                <div class="input-field col s12">
-                    <select id="countryField">
-                      <option class="white" value="" disabled selected>County</option>
-                      <option value="au">Australia</option>
-                      <option value="br">Brasil</option>
-                      <option value="de">Deutschland</option>
-                      <option value="es">España</option>
-                      <option value="fr">France</option>
-                      <option value="in">India</option>
-                      <option value="it">Italia</option>
-                      <option value="mx">Mexico</option>
-                      <option value="uk">UK</option>
-                    </select>
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8" />
+            <title>Housing search</title>
+            <link rel="stylesheet" href="CSS/style.css" />
+            <link rel="stylesheet" href="CSS/nouislider.css" />
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet"/>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+          </head>
+          <body>
+            <header id="header">
+              <div class="container">
+                <div class="form-wrapper">
+                  <div class="row">
+                    <div class="input-field col s6">
+                      <select id="countryField">
+                        <option class="white" value="" disabled selected>County</option>
+                        <option value="uk">UK</option>
+                        <option value="br">Brasil</option>
+                        <option value="de">Deutschland</option>
+                        <option value="es">España</option>
+                        <option value="fr">France</option>
+                        <option value="in">India</option>
+                        <option value="it">Italia</option>
+                        <option value="mx">Mexico</option>
+                      </select>
+                    </div>
+                    <div class="input-field col s6">
+                        <textarea id="cityField" class="materialize-textarea"></textarea>
+                        <label for="cityField">City</label>
+                    </div>
+                  </div>
+                  <form id="form">
+                    <p>
+                        <label>
+                            <input name="group1" value="buy" type="radio" checked />
+                            <span>Buy</span>
+                        </label>
+                        <label>
+                            <input name="group1" value="rent" type="radio" />
+                            <span>Rent</span>
+                        </label>
+                    </p>
+                </form>
+                  <a id="searchBtn" class="waves-effect waves-light btn">Search</a>
                 </div>
-                <div class="input-field">
-                    <textarea id="cityField" class="materialize-textarea"></textarea>
-                    <label for="cityField">City</label>
-                </div>
-                <p>
-                    <label>
-                        <input name="group1" value="buy" type="radio" checked />
-                        <span>Buy</span>
-                    </label>
-                    <label>
-                        <input name="group1" value="rent" type="radio" />
-                        <span>Rent</span>
-                    </label>    
-                </p>
-                <a class="btn-floating btn-large halfway-fab waves-effect waves-light teal">
-                    <i id="searchBtn" class="material-icons">search</i>
-                  </a>
-            </form>
+              </div>
+            </header>
+            <div class="progress" id="loader">
+              <div class="indeterminate"></div>
             </div>
-          
-        </div>
-        <div id="test-slider"></div>
-      </nav>
-      <div class="container" id="content">
-        <div class="progress" id="loader">
-          <div class="indeterminate"></div>
-        </div>
+              <div class="container">
+                <div class="row">
+                  <aside id="sidebar" class="col s3">
+                    <h3>Filters</h3>
+                    <span class="label">Price</span>
+                    <div id="slider-price"></div>
+                    <span class="line"></span>
+                    <span class="label">Rooms</span>
+                    <div id="slider-rooms"></div>
+                    <span class="line"></span>
+                    <span class="label">Bedrooms</span>
+                    <div id="slider-bedrooms"></div>
+                    <span class="line"></span>
+                    <span class="label">Bathrooms</span>
+                    <div id="slider-bathrooms"></div>
+                  </aside>
+                  <main id="content" class="col s9">
+                  </main>
+                </div>
+              </div>
 
-        <ul id="pagination" class="pagination">
-            <li class="waves-effect"><a href="#!"><i id="pageLeft" class="material-icons">chevron_left</i></a></li>
-            <li class="active"><a href="#!">1</a></li>
-            <li class="waves-effect"><a href="#!"><i id="pageRight" class="material-icons">chevron_right</i></a></li>
-          </ul>
-      </div>
-      
+              <div id="modal1" class="modal">
+                    <div class="modal-content">
+                      <div class="row">
+                        <div class="col s4">
+                            <img src="https://lorempixel.com/100/190/nature/6">
+                        </div>
+                        <div class="col s8">
+                          <h4 id="modalTitle"></h4>
+                          <p id="modalPrise" class="price"></p>
+                          <p id="modalDescr" class="descr"></p>
+                          <p id="modalRooms" class="descr"></p>
+                          <p id="modalBedrooms" class="descr"></p>
+                          <p id="modalBathrooms" class="descr"></p>
+                          <a id="modalLink">Open site</a>
+                        </div>
+                      </div>
+                      <div class="row">
+                          <div id="googleMap" style="width:100%;height:200px;"></div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                    </div>
+                  </div>
+                  <ul id="pagination" class="pagination">
+                    <li class="waves-effect"><a href="#!"><i id="pageLeft" class="material-icons">chevron_left</i></a></li>
+                    <li class="active"><a id="pageNumber">1</a></li>
+                    <li class="waves-effect"><a href="#!"><i id="pageRight" class="material-icons">chevron_right</i></a></li>
+                </ul>
   </body>
 </html>
 
-<script src="JS/script.js"></script>
+
 <script src="JS/nouislider.js"></script>
+<script src="JS/script.js"></script>
